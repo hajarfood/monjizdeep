@@ -1,0 +1,97 @@
+/* ملف CSS موحد للأيقونات الأفقية في جميع أنحاء النظام */
+
+/* تنسيق الأيقونات الأفقية - قوي ومحدد */
+.action-buttons-horizontal {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    padding: 4px 0 !important;
+    width: 100% !important;
+}
+
+.action-buttons-horizontal .action-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    font-size: 13px !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+/* ألوان الأيقونات */
+.action-buttons-horizontal .action-btn.edit {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%) !important;
+    color: white !important;
+}
+
+.action-buttons-horizontal .action-btn.edit:hover {
+    background: linear-gradient(135deg, #ff8f00 0%, #f57c00 100%) !important;
+    transform: translateY(-1px) scale(1.05) !important;
+    box-shadow: 0 3px 8px rgba(255, 193, 7, 0.4) !important;
+}
+
+.action-buttons-horizontal .action-btn.view {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+    color: white !important;
+}
+
+.action-buttons-horizontal .action-btn.view:hover {
+    background: linear-gradient(135deg, #138496 0%, #117a8b 100%) !important;
+    transform: translateY(-1px) scale(1.05) !important;
+    box-shadow: 0 3px 8px rgba(23, 162, 184, 0.4) !important;
+}
+
+.action-buttons-horizontal .action-btn.delete {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    color: white !important;
+}
+
+.action-buttons-horizontal .action-btn.delete:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%) !important;
+    transform: translateY(-1px) scale(1.05) !important;
+    box-shadow: 0 3px 8px rgba(220, 53, 69, 0.4) !important;
+}
+
+/* تحسينات إضافية للجداول */
+.modern-table td {
+    padding: 8px 6px !important;
+    vertical-align: middle !important;
+}
+
+.modern-table tbody tr:hover {
+    background-color: #f8f9fa !important;
+}
+
+.modern-table td:last-child {
+    width: 120px !important;
+    text-align: center !important;
+}
+
+/* تحسينات للطباعة */
+@media print {
+    .action-buttons-horizontal {
+        display: none !important;
+    }
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .action-buttons-horizontal .action-btn {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 11px !important;
+    }
+    
+    .action-buttons-horizontal {
+        gap: 4px !important;
+    }
+}
