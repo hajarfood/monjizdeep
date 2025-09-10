@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استعادة البيانات - منجز</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #212529;
+        }
+        .data-info {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .backup-info {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 1px solid #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 استعادة البيانات التلقائية</h1>
+        
+        <div id="currentStatus" class="data-info">
+            <strong>📊 حالة البيانات الحالية:</strong>
+            <div id="dataStatus">جاري الفحص...</div>
+        </div>
+
+        <div id="backupInfo" class="backup-info" style="display: none;">
+            <strong>💾 معلومات النسخة الاحتياطية:</strong>
+            <div id="backupDetails"></div>
+        </div>
+
+        <button class="btn" onclick="checkData()">🔍 فحص البيانات</button>
+        <button class="btn btn-success" onclick="restoreData()">📥 استعادة البيانات</button>
+        <button class="btn btn-warning" onclick="createBackup()">💾 إنشاء نسخة احتياطية</button>
+
+        <div id="result"></div>
+
+        <div class="data-info">
+            <h3>📋 كيف يعمل النظام:</h3>
+            <ul>
+                <li>✅ <strong>نسخ احتياطية تلقائية</strong> كل 5 دقائق</li>
+                <li>✅ <strong>حفظ عند إغلاق المتصفح</strong></li>
+                <li>✅ <strong>استعادة تلقائية</strong> عند فتح صفحة جديدة</li>
+                <li>✅ <strong>حفظ في مواقع متعددة</strong> (localStorage + sessionStorage)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/data-manager.js"></script>
+    <script>
+        // تهيئة النظام المركزي
+        if (!window.dataManager) {
+            window.dataManager = new DataManager();
+        }
+
+        // فحص البيانات
+        function checkData() {
+            const dataTypes = [
+                'monjizProducts', 'monjizSales', 'monjizInvoices', 'monjizPurchases',
+                'monjizCustomers', 'monjizSuppliers', 'monjizCategories'
+            ];
+
+            let totalRecords = 0;
+            let dataFound = false;
+
+            dataTypes.forEach(key => {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key)) || [];
+                    const count = Array.isArray(data) ? data.length : 0;
+                    totalRecords += count;
+                    if (count > 0) dataFound = true;
+                } catch (error) {
+                    // تجاهل الأخطاء
+                }
+            });
+
+            let statusHTML = '';
+            let statusClass = '';
+
+            if (dataFound) {
+                statusHTML = `✅ تم العثور على البيانات<br><strong>إجمالي السجلات: ${totalRecords}</strong>`;
+                statusClass = 'status-success';
+            } else {
+                statusHTML = '❌ لا توجد بيانات محفوظة';
+                statusClass = 'status-error';
+            }
+
+            document.getElementById('dataStatus').innerHTML = statusHTML;
+            document.getElementById('currentStatus').className = `data-info ${statusClass}`;
+
+            // فحص النسخة الاحتياطية
+            checkBackupInfo();
+        }
+
+        // فحص معلومات النسخة الاحتياطية
+        function checkBackupInfo() {
+            const backup = localStorage.getItem('monjizAutoBackup');
+            const backupDate = localStorage.getItem('monjizBackupDate');
+            const sessionBackup = sessionStorage.getItem('monjizAutoBackup');
+
+            if (backup || sessionBackup) {
+                let backupHTML = '';
+                
+                if (backupDate) {
+                    const date = new Date(backupDate);
+                    backupHTML += `📅 تاريخ آخر نسخة احتياطية: ${date.toLocaleString('ar')}<br>`;
+                }
+                
+                if (backup) {
+                    backupHTML += '💾 نسخة احتياطية في localStorage: موجودة<br>';
+                }
+                
+                if (sessionBackup) {
+                    backupHTML += '🔄 نسخة احتياطية في sessionStorage: موجودة<br>';
+                }
+
+                document.getElementById('backupDetails').innerHTML = backupHTML;
+                document.getElementById('backupInfo').style.display = 'block';
+            } else {
+                document.getElementById('backupInfo').style.display = 'none';
+            }
+        }
+
+        // استعادة البيانات
+        function restoreData() {
+            showResult('🔄 جاري استعادة البيانات...', 'warning');
+            
+            setTimeout(() => {
+                try {
+                    const restored = window.dataManager.restoreFromBackup();
+                    
+                    if (restored) {
+                        showResult('✅ تم استعادة البيانات بنجاح!', 'success');
+                        setTimeout(() => {
+                            checkData();
+                        }, 1000);
+                    } else {
+                        showResult('⚠️ لم يتم العثور على نسخة احتياطية للاستعادة', 'warning');
+                    }
+                } catch (error) {
+                    showResult('❌ خطأ في استعادة البيانات: ' + error.message, 'error');
+                }
+            }, 500);
+        }
+
+        // إنشاء نسخة احتياطية
+        function createBackup() {
+            showResult('💾 جاري إنشاء نسخة احتياطية...', 'warning');
+            
+            setTimeout(() => {
+                try {
+                    window.dataManager.createAutoBackup();
+                    showResult('✅ تم إنشاء النسخة الاحتياطية بنجاح!', 'success');
+                    setTimeout(() => {
+                        checkBackupInfo();
+                    }, 1000);
+                } catch (error) {
+                    showResult('❌ خطأ في إنشاء النسخة الاحتياطية: ' + error.message, 'error');
+                }
+            }, 500);
+        }
+
+        // عرض النتيجة
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<div class="status status-${type}">${message}</div>`;
+            
+            // إخفاء الرسالة بعد 5 ثوان (إلا إذا كانت رسالة نجاح)
+            if (type !== 'success') {
+                setTimeout(() => {
+                    resultDiv.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        // فحص تلقائي عند تحميل الصفحة
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                checkData();
+                
+                // محاولة استعادة تلقائية إذا لم توجد بيانات
+                const hasData = window.dataManager.hasAnyData();
+                if (!hasData) {
+                    showResult('🔍 لم يتم العثور على بيانات، محاولة الاستعادة التلقائية...', 'warning');
+                    setTimeout(() => {
+                        restoreData();
+                    }, 2000);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات - منجز</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1 i {
+            color: #667eea;
+        }
+
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .settings-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-header i {
+            font-size: 24px;
+            color: #667eea;
+        }
+
+        .card-header h3 {
+            color: #333;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            background: #f8f9ff;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover .file-upload-label {
+            background: #667eea;
+            color: white;
+        }
+
+        .logo-preview {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            background: #f8f9fa;
+        }
+
+        .logo-preview img {
+            max-width: 90px;
+            max-height: 90px;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .tax-rate-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-cog"></i>
+                إعدادات النظام
+            </h1>
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-right"></i>
+                العودة للرئيسية
+            </a>
+        </div>
+
+        <!-- Settings Grid -->
+        <div class="settings-grid">
+            <!-- Company Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-building"></i>
+                    <h3>إعدادات المؤسسة</h3>
+                </div>
+                
+                <div class="success-message" id="company-success">
+                    <i class="fas fa-check-circle"></i>
+                    تم حفظ إعدادات المؤسسة بنجاح
+                </div>
+                
+                <form id="company-form">
+                    <div class="form-group">
+                        <label for="company-name">اسم المؤسسة</label>
+                        <input type="text" id="company-name" class="form-control" placeholder="أدخل اسم المؤسسة">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-logo">شعار المؤسسة</label>
+                        <div class="file-upload">
+                            <input type="file" id="company-logo" accept="image/*">
+                            <div class="file-upload-label">
+                                <i class="fas fa-upload"></i>
+                                اختر ملف الشعار
+                            </div>
+                        </div>
+                        <div class="logo-preview" id="logo-preview">
+                            <i class="fas fa-image" style="color: #ccc; font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tax-number">الرقم الضريبي</label>
+                        <input type="text" id="tax-number" class="form-control" placeholder="أدخل الرقم الضريبي">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="commercial-register">السجل التجاري</label>
+                        <input type="text" id="commercial-register" class="form-control" placeholder="أدخل رقم السجل التجاري">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-address">عنوان المؤسسة</label>
+                        <textarea id="company-address" class="form-control" rows="3" placeholder="أدخل عنوان المؤسسة"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-phone">رقم الهاتف</label>
+                        <input type="tel" id="company-phone" class="form-control" placeholder="أدخل رقم الهاتف">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-email">البريد الإلكتروني</label>
+                        <input type="email" id="company-email" class="form-control" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ إعدادات المؤسسة
+                    </button>
+                </form>
+            </div>
+
+            <!-- User Settings -->
+            <!-- استبدال قسم المستخدم الرئيسي بقسم إدارة المستخدمين -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-users-cog"></i>
+                    <h3>إعدادات المستخدمين</h3>
+                </div>
+            
+                <div class="success-message" id="users-success">
+                    <i class="fas fa-check-circle"></i>
+                    تم حفظ إعدادات المستخدمين بنجاح
+                </div>
+            
+                <div>
+                    <table id="users-table" class="table">
+                        <thead>
+                            <tr>
+                                <th>اسم المستخدم</th>
+                                <th>الدور</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم تعبئة المستخدمين هنا -->
+                        </tbody>
+                    </table>
+
+                    <!-- إضافة قسم تغيير كلمة مرور المسؤول الرئيسي -->
+                    <h4>إعدادات المسؤول الرئيسي</h4>
+                    <form id="users-form">
+                        <div class="form-group">
+                            <label for="admin-user">اسم المستخدم الرئيسي</label>
+                            <input type="text" id="admin-user" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">تغيير كلمة المرور</label>
+                            <input type="password" id="admin-password" class="form-control" placeholder="اترك فارغاً إذا لم ترغب بالتغيير">
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password-confirm">تأكيد كلمة المرور</label>
+                            <input type="password" id="admin-password-confirm" class="form-control" placeholder="اترك فارغاً إذا لم ترغب بالتغيير">
+                        </div>
+                        <button type="submit" class="btn-primary">حفظ إعدادات المسؤول</button>
+                    </form>
+            
+                    <h4>إضافة مستخدم جديد</h4>
+                    <form id="add-user-form">
+                        <div class="form-group">
+                            <label for="new-username">اسم المستخدم</label>
+                            <input type="text" id="new-username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">كلمة المرور</label>
+                            <input type="password" id="new-password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-role">الدور</label>
+                            <select id="new-role" class="form-control" required>
+                                <option value="manager">مدير</option>
+                                <option value="accountant">محاسب</option>
+                                <option value="cashier">كاشير</option>
+                                <option value="seller">بائع</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">إضافة مستخدم</button>
+                    </form>
+                </div>
+            
+                <script>
+                // تحميل المستخدمين من localStorage
+                function loadUsers() {
+                    const users = JSON.parse(localStorage.getItem('monjizUsers')) || [];
+                    const tbody = document.querySelector('#users-table tbody');
+                    tbody.innerHTML = '';
+                    users.forEach((user, index) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${user.username}</td>
+                            <td>${user.role}</td>
+                            <td>
+                                <button onclick="editUser(${index})">تعديل</button>
+                                <button onclick="deleteUser(${index})">حذف</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            
+                // إضافة مستخدم جديد
+                document.getElementById('add-user-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const username = document.getElementById('new-username').value.trim();
+                    const password = document.getElementById('new-password').value.trim();
+                    const role = document.getElementById('new-role').value;
+            
+                    if (!username || !password) {
+                        alert('يرجى ملء جميع الحقول');
+                        return;
+                    }
+            
+                    const users = JSON.parse(localStorage.getItem('monjizUsers')) || [];
+                    if (users.some(u => u.username === username)) {
+                        alert('اسم المستخدم موجود بالفعل');
+                        return;
+                    }
+            
+                    users.push({ username, password, role, createdAt: new Date().toISOString() });
+                    localStorage.setItem('monjizUsers', JSON.stringify(users));
+                    loadUsers();
+                    this.reset();
+                    showSuccessMessage('users-success');
+                });
+            
+                // حذف مستخدم
+                function deleteUser(index) {
+                    if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+                    const users = JSON.parse(localStorage.getItem('monjizUsers')) || [];
+                    users.splice(index, 1);
+                    localStorage.setItem('monjizUsers', JSON.stringify(users));
+                    loadUsers();
+                    showSuccessMessage('users-success');
+                }
+            
+                // تعديل مستخدم
+                function editUser(index) {
+                    const users = JSON.parse(localStorage.getItem('monjizUsers')) || [];
+                    const user = users[index];
+                    const newUsername = prompt('تعديل اسم المستخدم:', user.username);
+                    if (newUsername === null) return;
+                    const newRole = prompt('تعديل الدور (manager, accountant, cashier, seller):', user.role);
+                    if (newRole === null) return;
+            
+                    if (!newUsername.trim() || !newRole.trim()) {
+                        alert('القيم غير صالحة');
+                        return;
+                    }
+            
+                    user.username = newUsername.trim();
+                    user.role = newRole.trim();
+                    users[index] = user;
+                    localStorage.setItem('monjizUsers', JSON.stringify(users));
+                    loadUsers();
+                    showSuccessMessage('users-success');
+                }
+            
+                // تحميل المستخدمين عند تحميل الصفحة
+                window.addEventListener('DOMContentLoaded', loadUsers);
+                </script>
+            </div>
+
+            <!-- صلاحيات الحذف والتعديل -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>صلاحيات الحذف والتعديل</h3>
+                </div>
+                
+                <div class="success-message" id="permissions-success">
+                    <i class="fas fa-check-circle"></i>
+                    تم حفظ صلاحيات الحذف والتعديل بنجاح
+                </div>
+                
+                <form id="permissions-form">
+                    <div class="form-group">
+                        <label>اختر الدور</label>
+                        <select id="role-selector" class="form-control">
+                            <option value="manager">مدير</option>
+                            <option value="accountant">محاسب</option>
+                            <option value="cashier">كاشير</option>
+                            <option value="seller">بائع</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>صلاحيات الحذف والتعديل</label>
+                        <div class="permissions-grid">
+                            <!-- المبيعات -->
+                            <div class="permission-item">
+                                <span>المبيعات - تعديل</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-sales-edit" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>المبيعات - حذف</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-sales-delete">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- المشتريات -->
+                            <div class="permission-item">
+                                <span>المشتريات - تعديل</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-purchases-edit" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>المشتريات - حذف</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-purchases-delete">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- المنتجات -->
+                            <div class="permission-item">
+                                <span>المنتجات - تعديل</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-products-edit" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>المنتجات - حذف</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-products-delete">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- العملاء -->
+                            <div class="permission-item">
+                                <span>العملاء - تعديل</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-customers-edit" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>العملاء - حذف</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-customers-delete">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- الموردين -->
+                            <div class="permission-item">
+                                <span>الموردين - تعديل</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-suppliers-edit" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>الموردين - حذف</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-suppliers-delete">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- المحاسبة -->
+                            <div class="permission-item">
+                                <span>المحاسبة - تعديل</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-accounting-edit" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>المحاسبة - حذف</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="perm-accounting-delete">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ الصلاحيات
+                    </button>
+                </form>
+                
+                <script>
+                // تحميل صلاحيات الدور المحدد
+                function loadRolePermissions() {
+                    const role = document.getElementById('role-selector').value;
+                    const permissionsData = JSON.parse(localStorage.getItem('monjizPermissionsSettings')) || {};
+                    const rolePerms = permissionsData[role] || {
+                        'sales': { 'edit': true, 'delete': false },
+                        'purchases': { 'edit': true, 'delete': false },
+                        'products': { 'edit': true, 'delete': false },
+                        'customers': { 'edit': true, 'delete': false },
+                        'suppliers': { 'edit': true, 'delete': false },
+                        'accounting': { 'edit': true, 'delete': false }
+                    };
+                    
+                    // تعيين قيم مربعات الاختيار
+                    document.getElementById('perm-sales-edit').checked = rolePerms.sales.edit;
+                    document.getElementById('perm-sales-delete').checked = rolePerms.sales.delete;
+                    document.getElementById('perm-purchases-edit').checked = rolePerms.purchases.edit;
+                    document.getElementById('perm-purchases-delete').checked = rolePerms.purchases.delete;
+                    document.getElementById('perm-products-edit').checked = rolePerms.products.edit;
+                    document.getElementById('perm-products-delete').checked = rolePerms.products.delete;
+                    document.getElementById('perm-customers-edit').checked = rolePerms.customers.edit;
+                    document.getElementById('perm-customers-delete').checked = rolePerms.customers.delete;
+                    document.getElementById('perm-suppliers-edit').checked = rolePerms.suppliers.edit;
+                    document.getElementById('perm-suppliers-delete').checked = rolePerms.suppliers.delete;
+                    document.getElementById('perm-accounting-edit').checked = rolePerms.accounting.edit;
+                    document.getElementById('perm-accounting-delete').checked = rolePerms.accounting.delete;
+                }
+                
+                // حفظ صلاحيات الدور المحدد
+                document.getElementById('permissions-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const role = document.getElementById('role-selector').value;
+                    const permissionsData = JSON.parse(localStorage.getItem('monjizPermissionsSettings')) || {};
+                    
+                    // جمع قيم مربعات الاختيار
+                    permissionsData[role] = {
+                        'sales': {
+                            'edit': document.getElementById('perm-sales-edit').checked,
+                            'delete': document.getElementById('perm-sales-delete').checked
+                        },
+                        'purchases': {
+                            'edit': document.getElementById('perm-purchases-edit').checked,
+                            'delete': document.getElementById('perm-purchases-delete').checked
+                        },
+                        'products': {
+                            'edit': document.getElementById('perm-products-edit').checked,
+                            'delete': document.getElementById('perm-products-delete').checked
+                        },
+                        'customers': {
+                            'edit': document.getElementById('perm-customers-edit').checked,
+                            'delete': document.getElementById('perm-customers-delete').checked
+                        },
+                        'suppliers': {
+                            'edit': document.getElementById('perm-suppliers-edit').checked,
+                            'delete': document.getElementById('perm-suppliers-delete').checked
+                        },
+                        'accounting': {
+                            'edit': document.getElementById('perm-accounting-edit').checked,
+                            'delete': document.getElementById('perm-accounting-delete').checked
+                        }
+                    };
+                    
+                    // حفظ الصلاحيات
+                    localStorage.setItem('monjizPermissionsSettings', JSON.stringify(permissionsData));
+                    showSuccessMessage('permissions-success');
+                    
+                    // تحديث نظام الصلاحيات
+                    updatePermissionsSystem();
+                });
+                
+                // تحديث نظام الصلاحيات
+                function updatePermissionsSystem() {
+                    const permissionsData = JSON.parse(localStorage.getItem('monjizPermissionsSettings')) || {};
+                    
+                    // تحديث الصلاحيات في نظام الصلاحيات
+                    for (const role in permissionsData) {
+                        if (window.rolePermissions[role]) {
+                            window.rolePermissions[role].actions = permissionsData[role];
+                        }
+                    }
+                    
+                    console.log('✅ تم تحديث نظام الصلاحيات');
+                }
+                
+                // تغيير الدور المحدد
+                document.getElementById('role-selector').addEventListener('change', loadRolePermissions);
+                
+                // تحميل الصلاحيات عند تحميل الصفحة
+                document.addEventListener('DOMContentLoaded', function() {
+                    loadRolePermissions();
+                });
+                </script>
+            </div>
+
+            <!-- Tax Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-percentage"></i>
+                    <h3>معدلات الضريبة</h3>
+                </div>
+
+                <div class="success-message" id="tax-success">
+                    <i class="fas fa-check-circle"></i>
+                    تم حفظ معدلات الضريبة بنجاح
+                </div>
+
+                <form id="tax-form">
+                    <div class="form-group">
+                        <label for="vat-rate">ضريبة القيمة المضافة (%)</label>
+                        <input type="number" id="vat-rate" class="form-control" placeholder="15" min="0" max="100" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="withholding-tax">ضريبة الاستقطاع (%)</label>
+                        <input type="number" id="withholding-tax" class="form-control" placeholder="5" min="0" max="100" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label>معدلات ضريبية إضافية</label>
+                        <div id="additional-taxes">
+                            <div class="tax-rate-item">
+                                <div>
+                                    <input type="text" placeholder="اسم الضريبة" class="form-control" style="width: 60%; display: inline-block; margin-left: 10px;">
+                                    <input type="number" placeholder="النسبة %" class="form-control" style="width: 25%; display: inline-block;" min="0" max="100" step="0.01">
+                                </div>
+                                <button type="button" class="btn-secondary" onclick="removeAdditionalTax(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-secondary" onclick="addAdditionalTax()">
+                            <i class="fas fa-plus"></i>
+                            إضافة ضريبة
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ معدلات الضريبة
+                    </button>
+                </form>
+            </div>
+
+            <!-- System Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i>
+                    <h3>إعدادات النظام</h3>
+                </div>
+
+                <div class="success-message" id="system-success">
+                    <i class="fas fa-check-circle"></i>
+                    تم حفظ إعدادات النظام بنجاح
+                </div>
+
+                <form id="system-form">
+                    <div class="form-group">
+                        <label for="currency">العملة الافتراضية</label>
+                        <select id="currency" class="form-control">
+                            <option value="SAR">ريال سعودي (ر.س)</option>
+                            <option value="USD">دولار أمريكي ($)</option>
+                            <option value="EUR">يورو (€)</option>
+                            <option value="AED">درهم إماراتي (د.إ)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date-format">تنسيق التاريخ</label>
+                        <select id="date-format" class="form-control">
+                            <option value="dd/mm/yyyy">يوم/شهر/سنة</option>
+                            <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
+                            <option value="yyyy-mm-dd">سنة-شهر-يوم</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="language">لغة النظام</label>
+                        <select id="language" class="form-control">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>إعدادات الإشعارات</label>
+                        <div class="permissions-grid">
+                            <div class="permission-item">
+                                <span>إشعارات المخزون المنخفض</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="notify-low-stock" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>إشعارات الفواتير المستحقة</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="notify-due-invoices" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="permission-item">
+                                <span>إشعارات النسخ الاحتياطي</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="notify-backup" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="low-stock-threshold">حد المخزون المنخفض</label>
+                        <input type="number" id="low-stock-threshold" class="form-control" placeholder="10" min="1">
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ إعدادات النظام
+                    </button>
+                </form>
+            </div>
+
+            <!-- Backup Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-database"></i>
+                    <h3>النسخ الاحتياطي</h3>
+                </div>
+
+                <div class="success-message" id="backup-success">
+                    <i class="fas fa-check-circle"></i>
+                    تم إنشاء النسخة الاحتياطية بنجاح
+                </div>
+
+                <form id="backup-form">
+                    <div class="form-group">
+                        <label>النسخ الاحتياطي التلقائي</label>
+                        <div class="permission-item">
+                            <span>تفعيل النسخ الاحتياطي التلقائي</span>
+                            <label class="switch">
+                                <input type="checkbox" id="auto-backup" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="backup-frequency">تكرار النسخ الاحتياطي</label>
+                        <select id="backup-frequency" class="form-control">
+                            <option value="daily">يومياً</option>
+                            <option value="weekly">أسبوعياً</option>
+                            <option value="monthly">شهرياً</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn-primary" onclick="createBackup()">
+                            <i class="fas fa-download"></i>
+                            إنشاء نسخة احتياطية الآن
+                        </button>
+
+                        <button type="button" class="btn-secondary" onclick="document.getElementById('restore-file').click()">
+                            <i class="fas fa-upload"></i>
+                            استعادة من نسخة احتياطية
+                        </button>
+                        <input type="file" id="restore-file" style="display: none;" accept=".json" onchange="restoreBackup(this)">
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ إعدادات النسخ الاحتياطي
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تحميل الإعدادات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            setupEventListeners();
+        });
+
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            // معاينة الشعار
+            document.getElementById('company-logo').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('logo-preview');
+                        preview.innerHTML = `<img src="${e.target.result}" alt="شعار المؤسسة">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // حفظ إعدادات المؤسسة
+            document.getElementById('company-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveCompanySettings();
+            });
+
+            // حفظ إعدادات المستخدمين
+            document.getElementById('users-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveUserSettings();
+            });
+
+            // حفظ معدلات الضريبة
+            document.getElementById('tax-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveTaxSettings();
+            });
+
+            // حفظ إعدادات النظام
+            document.getElementById('system-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveSystemSettings();
+            });
+
+            // حفظ إعدادات النسخ الاحتياطي
+            document.getElementById('backup-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveBackupSettings();
+            });
+        }
+
+        // تحميل الإعدادات المحفوظة
+        function loadSettings() {
+            // تحميل إعدادات المؤسسة
+            const companySettings = JSON.parse(localStorage.getItem('monjizCompanySettings')) || {};
+            document.getElementById('company-name').value = companySettings.name || '';
+            document.getElementById('tax-number').value = companySettings.taxNumber || '';
+            document.getElementById('commercial-register').value = companySettings.commercialRegister || '';
+            document.getElementById('company-address').value = companySettings.address || '';
+            document.getElementById('company-phone').value = companySettings.phone || '';
+            document.getElementById('company-email').value = companySettings.email || '';
+
+            if (companySettings.logo) {
+                document.getElementById('logo-preview').innerHTML = `<img src="${companySettings.logo}" alt="شعار المؤسسة">`;
+            }
+
+            // تحميل إعدادات المستخدمين
+            const userSettings = JSON.parse(localStorage.getItem('monjizUserSettings')) || {};
+            document.getElementById('admin-user').value = userSettings.adminUser || 'admin';
+
+            // تحميل الصلاحيات
+            const permissions = userSettings.permissions || {};
+            Object.keys(permissions).forEach(perm => {
+                const checkbox = document.getElementById(`perm-${perm}`);
+                if (checkbox) {
+                    checkbox.checked = permissions[perm];
+                }
+            });
+
+            // تحميل معدلات الضريبة
+            const taxSettings = JSON.parse(localStorage.getItem('monjizTaxSettings')) || {};
+            document.getElementById('vat-rate').value = taxSettings.vatRate || 15;
+            document.getElementById('withholding-tax').value = taxSettings.withholdingTax || 5;
+
+            // تحميل إعدادات النظام
+            const systemSettings = JSON.parse(localStorage.getItem('monjizSystemSettings')) || {};
+            document.getElementById('currency').value = systemSettings.currency || 'SAR';
+            document.getElementById('date-format').value = systemSettings.dateFormat || 'dd/mm/yyyy';
+            document.getElementById('language').value = systemSettings.language || 'ar';
+            document.getElementById('low-stock-threshold').value = systemSettings.lowStockThreshold || 10;
+
+            // تحميل إعدادات الإشعارات
+            const notifications = systemSettings.notifications || {};
+            document.getElementById('notify-low-stock').checked = notifications.lowStock !== false;
+            document.getElementById('notify-due-invoices').checked = notifications.dueInvoices !== false;
+            document.getElementById('notify-backup').checked = notifications.backup !== false;
+
+            // تحميل إعدادات النسخ الاحتياطي
+            const backupSettings = JSON.parse(localStorage.getItem('monjizBackupSettings')) || {};
+            document.getElementById('auto-backup').checked = backupSettings.autoBackup !== false;
+            document.getElementById('backup-frequency').value = backupSettings.frequency || 'weekly';
+        }
+
+        // حفظ إعدادات المؤسسة
+        function saveCompanySettings() {
+            const logoFile = document.getElementById('company-logo').files[0];
+
+            const settings = {
+                name: document.getElementById('company-name').value,
+                taxNumber: document.getElementById('tax-number').value,
+                commercialRegister: document.getElementById('commercial-register').value,
+                address: document.getElementById('company-address').value,
+                phone: document.getElementById('company-phone').value,
+                email: document.getElementById('company-email').value,
+                lastUpdated: new Date().toISOString()
+            };
+
+            if (logoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    settings.logo = e.target.result;
+                    localStorage.setItem('monjizCompanySettings', JSON.stringify(settings));
+                    showSuccessMessage('company-success');
+                };
+                reader.readAsDataURL(logoFile);
+            } else {
+                const existingSettings = JSON.parse(localStorage.getItem('monjizCompanySettings')) || {};
+                settings.logo = existingSettings.logo;
+                localStorage.setItem('monjizCompanySettings', JSON.stringify(settings));
+                showSuccessMessage('company-success');
+            }
+
+            console.log('✅ تم حفظ إعدادات المؤسسة');
+        }
+
+        // حفظ إعدادات المستخدمين
+        function saveUserSettings() {
+            const permissions = {};
+            document.querySelectorAll('[id^="perm-"]').forEach(checkbox => {
+                const permName = checkbox.id.replace('perm-', '');
+                permissions[permName] = checkbox.checked;
+            });
+
+            const settings = {
+                adminUser: document.getElementById('admin-user').value,
+                permissions: permissions,
+                lastUpdated: new Date().toISOString()
+            };
+
+            const password = document.getElementById('admin-password').value;
+            const confirmPassword = document.getElementById('admin-password-confirm').value;
+            
+            // التحقق من تطابق كلمتي المرور إذا تم إدخالهما
+            if (password) {
+                if (password !== confirmPassword) {
+                    alert('كلمتا المرور غير متطابقتين');
+                    return;
+                }
+                settings.adminPassword = password; // في التطبيق الحقيقي، يجب تشفير كلمة المرور
+            }
+
+            localStorage.setItem('monjizUserSettings', JSON.stringify(settings));
+            showSuccessMessage('users-success');
+            console.log('✅ تم حفظ إعدادات المستخدمين');
+            
+            // إعادة تعيين حقول كلمة المرور
+            document.getElementById('admin-password').value = '';
+            document.getElementById('admin-password-confirm').value = '';
+        }
+
+        // حفظ معدلات الضريبة
+        function saveTaxSettings() {
+            const settings = {
+                vatRate: parseFloat(document.getElementById('vat-rate').value) || 15,
+                withholdingTax: parseFloat(document.getElementById('withholding-tax').value) || 5,
+                additionalTaxes: [],
+                lastUpdated: new Date().toISOString()
+            };
+
+            // جمع الضرائب الإضافية
+            document.querySelectorAll('#additional-taxes .tax-rate-item').forEach(item => {
+                const nameInput = item.querySelector('input[type="text"]');
+                const rateInput = item.querySelector('input[type="number"]');
+                if (nameInput.value && rateInput.value) {
+                    settings.additionalTaxes.push({
+                        name: nameInput.value,
+                        rate: parseFloat(rateInput.value)
+                    });
+                }
+            });
+
+            localStorage.setItem('monjizTaxSettings', JSON.stringify(settings));
+            showSuccessMessage('tax-success');
+            console.log('✅ تم حفظ معدلات الضريبة');
+        }
+
+        // حفظ إعدادات النظام
+        function saveSystemSettings() {
+            const settings = {
+                currency: document.getElementById('currency').value,
+                dateFormat: document.getElementById('date-format').value,
+                language: document.getElementById('language').value,
+                lowStockThreshold: parseInt(document.getElementById('low-stock-threshold').value) || 10,
+                notifications: {
+                    lowStock: document.getElementById('notify-low-stock').checked,
+                    dueInvoices: document.getElementById('notify-due-invoices').checked,
+                    backup: document.getElementById('notify-backup').checked
+                },
+                lastUpdated: new Date().toISOString()
+            };
+
+            localStorage.setItem('monjizSystemSettings', JSON.stringify(settings));
+            showSuccessMessage('system-success');
+            console.log('✅ تم حفظ إعدادات النظام');
+        }
+
+        // حفظ إعدادات النسخ الاحتياطي
+        function saveBackupSettings() {
+            const settings = {
+                autoBackup: document.getElementById('auto-backup').checked,
+                frequency: document.getElementById('backup-frequency').value,
+                lastUpdated: new Date().toISOString()
+            };
+
+            localStorage.setItem('monjizBackupSettings', JSON.stringify(settings));
+            showSuccessMessage('backup-success');
+            console.log('✅ تم حفظ إعدادات النسخ الاحتياطي');
+        }
+
+        // إضافة ضريبة إضافية
+        function addAdditionalTax() {
+            const container = document.getElementById('additional-taxes');
+            const newTaxItem = document.createElement('div');
+            newTaxItem.className = 'tax-rate-item';
+            newTaxItem.innerHTML = `
+                <div>
+                    <input type="text" placeholder="اسم الضريبة" class="form-control" style="width: 60%; display: inline-block; margin-left: 10px;">
+                    <input type="number" placeholder="النسبة %" class="form-control" style="width: 25%; display: inline-block;" min="0" max="100" step="0.01">
+                </div>
+                <button type="button" class="btn-secondary" onclick="removeAdditionalTax(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(newTaxItem);
+        }
+
+        // حذف ضريبة إضافية
+        function removeAdditionalTax(button) {
+            button.parentElement.remove();
+        }
+
+        // إنشاء نسخة احتياطية
+        function createBackup() {
+            const backupData = {
+                companySettings: JSON.parse(localStorage.getItem('monjizCompanySettings')) || {},
+                userSettings: JSON.parse(localStorage.getItem('monjizUserSettings')) || {},
+                taxSettings: JSON.parse(localStorage.getItem('monjizTaxSettings')) || {},
+                systemSettings: JSON.parse(localStorage.getItem('monjizSystemSettings')) || {},
+                backupSettings: JSON.parse(localStorage.getItem('monjizBackupSettings')) || {},
+                customers: JSON.parse(localStorage.getItem('monjizCustomers')) || [],
+                suppliers: JSON.parse(localStorage.getItem('monjizSuppliers')) || [],
+                products: JSON.parse(localStorage.getItem('monjizProducts')) || [],
+                sales: JSON.parse(localStorage.getItem('monjizSales')) || [],
+                purchases: JSON.parse(localStorage.getItem('monjizPurchases')) || [],
+                accounts: JSON.parse(localStorage.getItem('monjizAccounts')) || [],
+                backupDate: new Date().toISOString(),
+                version: '1.0'
+            };
+
+            const dataStr = JSON.stringify(backupData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `monjiz-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+
+            showSuccessMessage('backup-success');
+            console.log('✅ تم إنشاء النسخة الاحتياطية');
+        }
+
+        // استعادة من نسخة احتياطية
+        function restoreBackup(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backupData = JSON.parse(e.target.result);
+
+                    // التحقق من صحة النسخة الاحتياطية
+                    if (!backupData.version || !backupData.backupDate) {
+                        alert('ملف النسخة الاحتياطية غير صالح');
+                        return;
+                    }
+
+                    // استعادة البيانات
+                    Object.keys(backupData).forEach(key => {
+                        if (key !== 'backupDate' && key !== 'version') {
+                            if (key.endsWith('Settings')) {
+                                localStorage.setItem(`monjiz${key.charAt(0).toUpperCase() + key.slice(1)}`, JSON.stringify(backupData[key]));
+                            } else {
+                                localStorage.setItem(`monjiz${key.charAt(0).toUpperCase() + key.slice(1)}`, JSON.stringify(backupData[key]));
+                            }
+                        }
+                    });
+
+                    alert('تم استعادة النسخة الاحتياطية بنجاح');
+                    location.reload(); // إعادة تحميل الصفحة لتحديث البيانات
+                } catch (error) {
+                    alert('خطأ في قراءة ملف النسخة الاحتياطية');
+                    console.error('خطأ في استعادة النسخة الاحتياطية:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // عرض رسالة النجاح
+        function showSuccessMessage(elementId) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+    <!-- استدعاء ملف نظام الصلاحيات -->
+    <script src="js/permissions.js"></script>
+</body>
+</html>

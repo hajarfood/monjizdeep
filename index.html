@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الأعمال</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/action-buttons-horizontal.css">
+    <link rel="stylesheet" href="css/user-experience-improvements.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Company Header Styles */
+        .company-header {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .company-details h1 {
+            margin: 0;
+            color: #333;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .company-details p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info span {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .restore-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .restore-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .company-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h1>نظام إدارة الأعمال</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> المبيعات</a></li>
+                    <li><a href="purchases.html"><i class="fas fa-truck"></i> المشتريات</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> العملاء</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-user-tie"></i> الموردين</a></li>
+                    <li><a href="products.html"><i class="fas fa-boxes"></i> المخزون</a></li>
+                    <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                    <li><a href="accounting.html"><i class="fas fa-calculator"></i> الحسابات</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- لوحة التحكم -->
+    <section class="dashboard">
+        <div class="container">
+            <!-- Company Header -->
+            <div class="company-header" id="company-header" style="display: none;">
+                <div class="company-info">
+                    <div class="company-logo" id="company-logo-display">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="company-details">
+                        <h1 id="company-name-display">اسم المؤسسة</h1>
+                        <p id="company-tax-display">الرقم الضريبي: غير محدد</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span id="current-user">المستخدم الحالي</span>
+                    <button onclick="window.open('restore-data.html', '_blank')" class="restore-btn" title="استعادة البيانات">
+                        <i class="fas fa-database"></i>
+                        استعادة البيانات
+                    </button>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-header">
+                <h2><i class="fas fa-tachometer-alt"></i> لوحة التحكم</h2>
+            </div>
+
+
+
+            <!-- الإجراءات السريعة -->
+            <div class="quick-actions">
+                <h3><i class="fas fa-bolt"></i> إجراءات سريعة</h3>
+                <div class="actions-container">
+                    <a href="#" class="action-btn reports-btn">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>التقارير</span>
+                    </a>
+                    <a href="#" class="action-btn new-product-btn">
+                        <i class="fas fa-box-open"></i>
+                        <span>منتج جديد</span>
+                    </a>
+                    <a href="#" class="action-btn new-customer-btn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>عميل جديد</span>
+                    </a>
+                    <a href="#" class="action-btn new-invoice-btn">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span>فاتورة جديدة</span>
+                    </a>
+                    <a href="settings.html" class="action-btn settings-btn">
+                        <i class="fas fa-cog"></i>
+                        <span>الإعدادات</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- تقارير سريعة -->
+            <div class="quick-reports">
+                <h3><i class="fas fa-chart-bar"></i> تقارير سريعة</h3>
+                <div class="reports-grid">
+                    <div class="report-card" onclick="showProfitReport()">
+                        <div class="report-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="report-content">
+                            <h4>تقرير الأرباح</h4>
+                            <p>الأرباح والخسائر</p>
+                        </div>
+                    </div>
+
+                    <div class="report-card" onclick="showCustomersReport()">
+                        <div class="report-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="report-content">
+                            <h4>تقرير العملاء</h4>
+                            <p>أداء العملاء</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" onclick="openEndOfDayReport()">
+                        <div class="report-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="report-content">
+                            <h4>إغلاق اليوم</h4>
+                            <p>تقرير شامل لإغلاق اليوم</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- منطقة عرض التقارير المباشرة -->
+            <div class="direct-report-container" id="direct-report-container" style="display: none;">
+                <div class="report-header">
+                    <h3 id="report-title">تقرير</h3>
+                    <button class="close-report-btn" onclick="closeDirectReport()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="report-content" id="report-content">
+                    <!-- محتوى التقرير سيظهر هنا -->
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+    <!-- القدم -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>جميع الحقوق محفوظة &copy; 2023 - نظام إدارة الأعمال</p>
+        </div>
+    </footer>
+
+    <script src="js/data-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/user-experience.js"></script>
+
+    <script>
+        // تحديث البيانات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // الصفحة جاهزة
+        });
+
+
+
+        // دوال التقارير المباشرة
+        function showSalesReport() {
+            const reportContainer = document.getElementById('direct-report-container');
+            const reportTitle = document.getElementById('report-title');
+            const reportContent = document.getElementById('report-content');
+
+            reportTitle.innerHTML = '<i class="fas fa-shopping-cart"></i> تقرير المبيعات اليومية';
+            reportContent.innerHTML = generateSalesReportContent();
+            reportContainer.style.display = 'block';
+            reportContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showProfitReport() {
+            const reportContainer = document.getElementById('direct-report-container');
+            const reportTitle = document.getElementById('report-title');
+            const reportContent = document.getElementById('report-content');
+
+            reportTitle.innerHTML = '<i class="fas fa-chart-line"></i> تقرير الأرباح';
+            reportContent.innerHTML = generateProfitReportContent();
+            reportContainer.style.display = 'block';
+            reportContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showCustomersReport() {
+            const reportContainer = document.getElementById('direct-report-container');
+            const reportTitle = document.getElementById('report-title');
+            const reportContent = document.getElementById('report-content');
+
+            reportTitle.innerHTML = '<i class="fas fa-users"></i> تقرير العملاء';
+            reportContent.innerHTML = generateCustomersReportContent();
+            reportContainer.style.display = 'block';
+            reportContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeDirectReport() {
+            document.getElementById('direct-report-container').style.display = 'none';
+        }
+
+        // توليد محتوى تقرير المبيعات
+        function generateSalesReportContent() {
+            const sales = JSON.parse(localStorage.getItem('monjizSales')) || [];
+            
+            // تنسيق التاريخ بنفس طريقة sales.html (dd/mm/yyyy)
+            const currentDate = new Date();
+            const day = currentDate.getDate().toString().padStart(2, '0');
+            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const year = currentDate.getFullYear();
+            const today = `${day}/${month}/${year}`;
+            
+            // البحث عن مبيعات اليوم بالتنسيق الصحيح
+            const todaySales = sales.filter(sale => sale.date === today);
+            
+            let totalToday = 0;
+            let totalItems = 0;
+
+            let reportHTML = `
+                <div class="report-summary">
+                    <div class="summary-card">
+                        <h4>ملخص مبيعات اليوم</h4>
+                        <p><strong>التاريخ:</strong> ${new Date().toLocaleDateString('ar-SA')}</p>
+                        <p><strong>عدد الفواتير:</strong> ${todaySales.length}</p>
+                    </div>
+                </div>
+
+                <div class="report-table-container">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الفاتورة</th>
+                                <th>العميل</th>
+                                <th>الوقت</th>
+                                <th>عدد الأصناف</th>
+                                <th>المبلغ الإجمالي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            if (todaySales.length === 0) {
+                reportHTML += `
+                    <tr>
+                        <td colspan="5" class="no-data">لا توجد مبيعات اليوم</td>
+                    </tr>
+                `;
+            } else {
+                todaySales.forEach(sale => {
+                    const itemCount = sale.items ? sale.items.length : 0;
+                    const saleTotal = sale.total || 0;
+                    totalToday += saleTotal;
+                    totalItems += itemCount;
+
+                    reportHTML += `
+                        <tr>
+                            <td>#${sale.id}</td>
+                            <td>${sale.customerName || 'عميل نقدي'}</td>
+                            <td>${sale.time || 'غير محدد'}</td>
+                            <td>${itemCount}</td>
+                            <td>${saleTotal.toFixed(2)} ر.س</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            reportHTML += `
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="3"><strong>الإجمالي</strong></td>
+                                <td><strong>${totalItems}</strong></td>
+                                <td><strong>${totalToday.toFixed(2)} ر.س</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+
+            return reportHTML;
+        }
+
+        // توليد محتوى تقرير الأرباح
+        function generateProfitReportContent() {
+            const sales = JSON.parse(localStorage.getItem('monjizSales')) || [];
+            let totalRevenue = 0;
+            let totalProfit = 0;
+            let totalCost = 0;
+
+            let reportHTML = `
+                <div class="report-table-container">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الفاتورة</th>
+                                <th>التاريخ</th>
+                                <th>الإيرادات</th>
+                                <th>التكلفة</th>
+                                <th>الربح</th>
+                                <th>هامش الربح</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            if (sales.length === 0) {
+                reportHTML += `
+                    <tr>
+                        <td colspan="6" class="no-data">لا توجد بيانات مبيعات</td>
+                    </tr>
+                `;
+            } else {
+                sales.forEach(sale => {
+                    const revenue = sale.total || 0;
+                    
+                    // تعديل طريقة حساب التكلفة
+                    let cost = 0;
+                    
+                    // استخدام products بدلاً من items
+                    if (sale.products && sale.products.length > 0) {
+                        // الحصول على بيانات المنتجات من النظام المركزي للصول على سعر التكلفة
+                        const allProducts = window.dataManager ? window.dataManager.getProducts() : [];
+                        
+                        // حساب التكلفة الإجمالية
+                        cost = sale.products.reduce((sum, item) => {
+                            // البحث عن المنتج في قاعدة البيانات للصول على سعر التكلفة
+                            const productData = allProducts.find(p => p.id == item.productId);
+                            const purchasePrice = productData ? productData.purchasePrice : 0;
+                            
+                            return sum + (purchasePrice * item.quantity);
+                        }, 0);
+                    }
+                    
+                    const profit = revenue - cost;
+                    const margin = revenue > 0 ? ((profit / revenue) * 100).toFixed(1) : 0;
+
+                    totalRevenue += revenue;
+                    totalCost += cost;
+                    totalProfit += profit;
+
+                    reportHTML += `
+                        <tr>
+                            <td>#${sale.id}</td>
+                            <td>${sale.date}</td>
+                            <td>${revenue.toFixed(2)} ر.س</td>
+                            <td>${cost.toFixed(2)} ر.س</td>
+                            <td class="${profit >= 0 ? 'profit-positive' : 'profit-negative'}">${profit.toFixed(2)} ر.س</td>
+                            <td>${margin}%</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const overallMargin = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0;
+
+            reportHTML += `
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="2"><strong>الإجمالي</strong></td>
+                                <td><strong>${totalRevenue.toFixed(2)} ر.س</strong></td>
+                                <td><strong>${totalCost.toFixed(2)} ر.س</strong></td>
+                                <td class="${totalProfit >= 0 ? 'profit-positive' : 'profit-negative'}"><strong>${totalProfit.toFixed(2)} ر.س</strong></td>
+                                <td><strong>${overallMargin}%</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+
+            return reportHTML;
+        }
+
+        // توليد محتوى تقرير العملاء
+        function generateCustomersReportContent() {
+            const sales = JSON.parse(localStorage.getItem('monjizSales')) || [];
+            const customers = JSON.parse(localStorage.getItem('monjizCustomers')) || [];
+
+            // تجميع بيانات العملاء
+            const customerStats = {};
+
+            sales.forEach(sale => {
+                const customerName = sale.customerName || 'عميل نقدي';
+                if (!customerStats[customerName]) {
+                    customerStats[customerName] = {
+                        name: customerName,
+                        totalSales: 0,
+                        orderCount: 0,
+                        lastOrder: sale.date
+                    };
+                }
+                customerStats[customerName].totalSales += sale.total || 0;
+                customerStats[customerName].orderCount += 1;
+                if (sale.date > customerStats[customerName].lastOrder) {
+                    customerStats[customerName].lastOrder = sale.date;
+                }
+            });
+
+            const customerArray = Object.values(customerStats).sort((a, b) => b.totalSales - a.totalSales);
+
+            let reportHTML = `
+                <div class="report-summary">
+                    <div class="summary-card">
+                        <h4>ملخص العملاء</h4>
+                        <p><strong>إجمالي العملاء:</strong> ${customerArray.length}</p>
+                        <p><strong>إجمالي الطلبات:</strong> ${sales.length}</p>
+                    </div>
+                </div>
+
+                <div class="report-table-container">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>اسم العميل</th>
+                                <th>عدد الطلبات</th>
+                                <th>إجمالي المشتريات</th>
+                                <th>متوسط الطلب</th>
+                                <th>آخر طلب</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            if (customerArray.length === 0) {
+                reportHTML += `
+                    <tr>
+                        <td colspan="5" class="no-data">لا توجد بيانات عملاء</td>
+                    </tr>
+                `;
+            } else {
+                customerArray.forEach(customer => {
+                    const avgOrder = customer.orderCount > 0 ? (customer.totalSales / customer.orderCount) : 0;
+
+                    reportHTML += `
+                        <tr>
+                            <td>${customer.name}</td>
+                            <td>${customer.orderCount}</td>
+                            <td>${customer.totalSales.toFixed(2)} ر.س</td>
+                            <td>${avgOrder.toFixed(2)} ر.س</td>
+                            <td>${customer.lastOrder}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            reportHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            return reportHTML;
+        }
+
+        // تحميل بيانات المؤسسة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحميل بيانات المؤسسة
+            loadCompanyData();
+            checkLoginStatus();
+            
+            // إضافة مستمع لأحداث تحديث البيانات
+            window.addEventListener('monjizDataUpdate', function(event) {
+                console.log('🔔 تم استلام تحديث بيانات في لوحة التحكم:', event.detail);
+                
+                // تحديث التقرير المعروض حالياً إذا كان مفتوحاً
+                const reportContainer = document.getElementById('direct-report-container');
+                if (reportContainer && reportContainer.style.display === 'block') {
+                    const reportTitle = document.getElementById('report-title').textContent;
+                    
+                    if (reportTitle.includes('تقرير المبيعات')) {
+                        console.log('🔄 تحديث تقرير المبيعات اليومية...');
+                        document.getElementById('report-content').innerHTML = generateSalesReportContent();
+                    } else if (reportTitle.includes('تقرير الأرباح')) {
+                        console.log('🔄 تحديث تقرير الأرباح...');
+                        document.getElementById('report-content').innerHTML = generateProfitReportContent();
+                    } else if (reportTitle.includes('تقرير العملاء')) {
+                        console.log('🔄 تحديث تقرير العملاء...');
+                        document.getElementById('report-content').innerHTML = generateCustomersReportContent();
+                    }
+                }
+            });
+        });
+
+        // تحميل بيانات المؤسسة مع معالجة محسنة للأخطاء
+        function loadCompanyData() {
+            try {
+                const companySettings = JSON.parse(localStorage.getItem('monjizCompanySettings') || '{}');
+                const userSettings = JSON.parse(localStorage.getItem('monjizUserSettings') || '{}');
+
+                if (companySettings && companySettings.name) {
+                    // عرض header المؤسسة
+                    const companyHeader = document.getElementById('company-header');
+                    if (companyHeader) {
+                        companyHeader.style.display = 'flex';
+                    }
+
+                    // عرض اسم المؤسسة
+                    const companyNameDisplay = document.getElementById('company-name-display');
+                    if (companyNameDisplay) {
+                        companyNameDisplay.textContent = companySettings.name;
+                    }
+
+                    // عرض الرقم الضريبي
+                    const taxDisplay = companySettings.taxNumber ?
+                        `الرقم الضريبي: ${companySettings.taxNumber}` :
+                        'الرقم الضريبي: غير محدد';
+                    const companyTaxDisplay = document.getElementById('company-tax-display');
+                    if (companyTaxDisplay) {
+                        companyTaxDisplay.textContent = taxDisplay;
+                    }
+
+                    // عرض الشعار
+                    const logoDisplay = document.getElementById('company-logo-display');
+                    if (logoDisplay) {
+                        if (companySettings.logo) {
+                            logoDisplay.innerHTML = `<img src="${companySettings.logo}" alt="شعار المؤسسة">`;
+                        } else {
+                            logoDisplay.innerHTML = '<i class="fas fa-building"></i>';
+                        }
+                    }
+
+                    // عرض المستخدم الحالي
+                    const currentUser = localStorage.getItem('monjizCurrentUser') || 'المدير';
+                    const currentUserRole = localStorage.getItem('monjizCurrentUserRole') || 'admin';
+                    const currentUserDisplay = document.getElementById('current-user');
+                    if (currentUserDisplay) {
+                        // ترجمة الدور إلى العربية
+                        let roleInArabic = 'مدير';
+                        switch(currentUserRole) {
+                            case 'admin':
+                                roleInArabic = 'مدير';
+                                break;
+                            case 'manager':
+                                roleInArabic = 'مدير فرع';
+                                break;
+                            case 'accountant':
+                                roleInArabic = 'محاسب';
+                                break;
+                            case 'cashier':
+                                roleInArabic = 'كاشير';
+                                break;
+                            case 'seller':
+                                roleInArabic = 'بائع';
+                                break;
+                        }
+                        currentUserDisplay.textContent = `مرحباً، ${currentUser} (${roleInArabic})`;
+                    }
+
+                    console.log('✅ تم تحميل بيانات المؤسسة:', companySettings.name);
+                } else {
+                    console.log('ℹ️ لم يتم العثور على بيانات المؤسسة');
+                }
+            } catch (error) {
+                console.error('❌ خطأ في تحميل بيانات المؤسسة:', error);
+            }
+        }
+
+        // فحص حالة تسجيل الدخول مع معالجة محسنة
+        function checkLoginStatus() {
+            try {
+                const isLoggedIn = localStorage.getItem('monjizLoggedIn');
+                if (!isLoggedIn || isLoggedIn !== 'true') {
+                    console.log('ℹ️ المستخدم غير مسجل الدخول، إعادة توجيه لصفحة تسجيل الدخول');
+                    // إعادة توجيه لصفحة تسجيل الدخول
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('❌ خطأ في فحص حالة تسجيل الدخول:', error);
+                // في حالة الخطأ، إعادة توجيه لصفحة تسجيل الدخول للأمان
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        // فتح تقرير إغلاق اليوم
+        function openEndOfDayReport() {
+            window.open('end-of-day-report.html', '_self');
+        }
+
+        // تسجيل الخروج مع معالجة محسنة
+        function logout() {
+            try {
+                if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                    console.log('🚪 تسجيل خروج المستخدم...');
+
+                    // مسح بيانات تسجيل الدخول
+                    localStorage.removeItem('monjizLoggedIn');
+                    localStorage.removeItem('monjizCurrentUser');
+
+                    console.log('✅ تم تسجيل الخروج بنجاح');
+
+                    // إعادة توجيه لصفحة تسجيل الدخول
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('❌ خطأ في تسجيل الخروج:', error);
+                // في حالة الخطأ، إعادة توجيه مباشرة
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+    <!-- إضافة ملف الصلاحيات -->
+    <script src="js/permissions.js"></script>
+    
+    <script>
+        // إخفاء الروابط غير المصرح بها في القائمة
+        function hideUnauthorizedLinks() {
+            const userRole = localStorage.getItem('monjizCurrentUserRole') || 'admin';
+            const permissions = rolePermissions[userRole] || rolePermissions['admin'];
+            
+            // الحصول على جميع روابط القائمة
+            const navLinks = document.querySelectorAll('.main-nav a');
+            
+            // فحص كل رابط
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                // إذا كان الرابط غير مصرح به، إخفاؤه
+                if (href && href !== 'index.html' && permissions[href] === false) {
+                    link.parentElement.style.display = 'none';
+                }
+            });
+        }
+        
+        // تنفيذ إخفاء الروابط غير المصرح بها بعد تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            hideUnauthorizedLinks();
+        });
+    </script>
+</html>
+<script src="js/reports-helper.js"></script>
+<script src="js/reports-financial.js"></script>
+<script src="js/reports-sales.js"></script>
+<script src="js/reports-inventory.js"></script>

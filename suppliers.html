@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموردين - نظام إدارة الأعمال</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accounting.css">
+    <link rel="stylesheet" href="css/accounting-fix.css">
+    <link rel="stylesheet" href="css/chart-of-accounts.css">
+    <link rel="stylesheet" href="css/purchases.css">
+    <link rel="stylesheet" href="css/action-buttons-horizontal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* تحسينات خاصة بصفحة الموردين */
+        .table-container-modern {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .modern-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 12px;
+            text-align: center;
+            font-weight: 600;
+            border: none;
+        }
+
+        .modern-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        .modern-table tbody tr:hover {
+            background-color: #f8f9ff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .badge.success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .badge.warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+            color: white;
+        }
+
+        .badge.secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+
+        .positive {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .negative {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        /* تحسين أيقونات الإجراءات */
+        .action-buttons-horizontal {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 6px !important;
+            justify-content: center !important;
+            align-items: center !important;
+            flex-wrap: nowrap !important;
+        }
+
+        .action-btn {
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 6px !important;
+            border: none !important;
+            cursor: pointer !important;
+            font-size: 14px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s ease !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .action-btn.edit {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%) !important;
+            color: white !important;
+        }
+
+        .action-btn.view {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+            color: white !important;
+        }
+
+        .action-btn.delete {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            color: white !important;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* تحسين البحث والتصفية */
+        .search-filters-modern {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box-modern {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-input-modern {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input-modern:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-group-modern {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-select-modern {
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select-modern:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* أنماط التنقل بين الصفحات - محسن */
+        .table-footer-modern {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            border-radius: 0 0 12px 12px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .results-info-modern {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .pagination-modern {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: white;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-btn:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-1px);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-btn.disabled {
+            background: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .page-btn.disabled:hover {
+            background: #f8f9fa;
+            transform: none;
+        }
+
+        .page-btn.prev,
+        .page-btn.next {
+            padding: 8px 16px;
+            font-weight: 600;
+        }
+
+        .page-btn i {
+            margin: 0 4px;
+        }
+
+        /* تأكيد أنماط الأيقونات - أولوية عالية */
+        .action-buttons-horizontal .action-btn.view,
+        .action-buttons-horizontal .action-btn.view i {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        .action-buttons-horizontal .action-btn.edit,
+        .action-buttons-horizontal .action-btn.edit i {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        .action-buttons-horizontal .action-btn.delete,
+        .action-buttons-horizontal .action-btn.delete i {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        /* إصلاح الأيقونات داخل الأزرار */
+        .action-buttons-horizontal .action-btn i {
+            font-size: 14px !important;
+            color: inherit !important;
+            background: none !important;
+        }
+
+        .action-buttons-horizontal .action-btn.view i {
+            color: white !important;
+        }
+
+        .action-buttons-horizontal .action-btn.edit i {
+            color: white !important;
+        }
+
+        .action-buttons-horizontal .action-btn.delete i {
+            color: white !important;
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .search-filters-modern {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box-modern {
+                min-width: auto;
+            }
+
+            .filter-group-modern {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .modern-table {
+                font-size: 12px;
+            }
+
+            .modern-table th,
+            .modern-table td {
+                padding: 8px 6px;
+            }
+
+            .action-btn {
+                width: 28px !important;
+                height: 28px !important;
+                font-size: 12px !important;
+            }
+
+            .pagination-modern {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .pagination-modern button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modern-table th,
+            .modern-table td {
+                padding: 6px 4px;
+                font-size: 11px;
+            }
+
+            .badge {
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+
+            .action-btn {
+                width: 24px !important;
+                height: 24px !important;
+                font-size: 10px !important;
+            }
+        }
+
+        /* أنماط النافذة المنبثقة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group select {
+            background: white;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        /* ========== شريط التنقل الرئيسي الموحد ========== */
+        .main-header {
+            background: linear-gradient(to left, #0078ff, #00c3ff);
+            color: white;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            height: 70px;
+        }
+
+        .main-header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            height: 100%;
+        }
+
+        .main-header .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .main-header .logo i {
+            font-size: 28px;
+            color: #f39c12;
+        }
+
+        .main-header .logo h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 600;
+            color: white;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 0;
+        }
+
+        .main-nav li {
+            margin: 0;
+        }
+
+        .main-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            height: 50px;
+            box-sizing: border-box;
+        }
+
+        .main-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-bottom-color: #f39c12;
+            transform: translateY(-1px);
+        }
+
+        .main-nav a.active {
+            background: rgba(255,255,255,0.15);
+            border-bottom-color: #f39c12;
+            font-weight: 600;
+        }
+
+        .main-nav a i {
+            font-size: 16px;
+            width: 18px;
+            text-align: center;
+        }
+
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .main-header .container {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 20px;
+            }
+
+            .main-header .logo {
+                margin-bottom: 10px;
+            }
+
+            .main-nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 5px;
+            }
+
+            .main-nav a {
+                padding: 12px 15px;
+                font-size: 13px;
+                height: auto;
+            }
+
+            .main-header .logo h1 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .main-nav a {
+                justify-content: center;
+                padding: 15px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h1>نظام إدارة الأعمال</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> المبيعات</a></li>
+                    <li><a href="purchases.html"><i class="fas fa-truck"></i> المشتريات</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> العملاء</a></li>
+                    <li><a href="suppliers.html" class="active"><i class="fas fa-user-tie"></i> الموردين</a></li>
+                    <li><a href="products.html"><i class="fas fa-boxes"></i> المخزون</a></li>
+                    <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                    <li><a href="accounting.html"><i class="fas fa-calculator"></i> الحسابات</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- محتوى الصفحة -->
+    <main class="main-content">
+        <div class="container">
+            <!-- قسم إدارة الموردين -->
+            <div class="products-management-modern">
+                <!-- رأس القسم -->
+                <div class="section-header-modern">
+                    <div class="header-title">
+                        <h3><i class="fas fa-user-tie"></i> إدارة الموردين</h3>
+                        <p>إدارة بيانات الموردين والحسابات والمتابعة</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="dropdown">
+                            <button class="btn-modern btn-secondary dropdown-toggle" onclick="toggleDropdown('print-export-dropdown')">
+                                <i class="fas fa-print"></i>
+                                طباعة وتصدير
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="print-export-dropdown">
+                                <a href="#" onclick="printSuppliers()"><i class="fas fa-print"></i> طباعة التقرير</a>
+                                <a href="#" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> تصدير Excel</a>
+                                <a href="#" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> تصدير PDF</a>
+                            </div>
+                        </div>
+                        <button class="btn-modern btn-primary add-supplier-btn" onclick="showAddSupplierModal()">
+                            <i class="fas fa-plus"></i>
+                            مورد جديد
+                        </button>
+                    </div>
+                </div>
+
+                <!-- تم حذف البطاقات الإحصائية لعدم ارتباطها بالبيانات الفعلية -->
+
+                <!-- أدوات البحث والتصفية -->
+                <div class="search-filters-modern">
+                    <div class="search-box-modern">
+                        <input type="text" class="search-input-modern" id="search-suppliers" placeholder="البحث في الموردين...">
+                    </div>
+                </div>
+
+            <!-- جدول الموردين -->
+            <div class="table-container-modern">
+                <table class="modern-table suppliers-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-user-tie"></i> الاسم</th>
+                            <th><i class="fas fa-tag"></i> النوع</th>
+                            <th><i class="fas fa-phone"></i> رقم الهاتف</th>
+                            <th><i class="fas fa-envelope"></i> البريد الإلكتروني</th>
+                            <th><i class="fas fa-cogs"></i> الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="suppliers-list">
+                        <!-- سيتم تحميل البيانات هنا بواسطة JavaScript -->
+                        <tr>
+                            <td><strong>004</strong></td>
+                            <td>أحمد محمد الخضار</td>
+                            <td><span class="badge success">فرد</span></td>
+                            <td>+966555123456</td>
+                            <td>ahmed.vegetables@gmail.com</td>
+                            <td><span class="badge warning">مواد غذائية</span></td>
+                            <td>
+                                <div class="action-buttons-horizontal">
+                                    <button class="action-btn edit" onclick="editSupplier(4)" title="تعديل">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn view" onclick="viewSupplier(4)" title="عرض">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn delete" onclick="deleteSupplier(4)" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>005</strong></td>
+                            <td>سالم علي القرطاسية</td>
+                            <td><span class="badge success">فرد</span></td>
+                            <td>+966544987654</td>
+                            <td>salem.stationery@hotmail.com</td>
+                            <td><span class="badge primary">قرطاسية</span></td>
+                            <td>
+                                <div class="action-buttons-horizontal">
+                                    <button class="action-btn edit" onclick="editSupplier(5)" title="تعديل">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn view" onclick="viewSupplier(5)" title="عرض">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn delete" onclick="deleteSupplier(5)" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- تذييل الجدول -->
+                <div class="table-footer-modern">
+                    <div class="results-info-modern">
+                        عرض <span id="suppliers-start-result">1</span> - <span id="suppliers-end-result">10</span> من <span id="suppliers-total-results">0</span> مورد
+                    </div>
+                    <div class="pagination-modern" id="suppliers-pagination-container">
+                        <button class="page-btn prev" id="suppliers-prev-btn" onclick="changeSuppliersPage('prev')">
+                            <i class="fas fa-chevron-right"></i> السابق
+                        </button>
+                        <button class="page-btn active" onclick="changeSuppliersPage(1)">1</button>
+                        <button class="page-btn" onclick="changeSuppliersPage(2)">2</button>
+                        <button class="page-btn" onclick="changeSuppliersPage(3)">3</button>
+                        <button class="page-btn next" id="suppliers-next-btn" onclick="changeSuppliersPage('next')">
+                            التالي <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </main>
+
+    <!-- نافذة إضافة مورد جديد -->
+    <div id="supplierModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">إضافة مورد جديد</h3>
+                <button class="modal-close" onclick="closeSupplierModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="supplierForm">
+                    <div class="form-group">
+                        <label for="supplierName">اسم المورد *</label>
+                        <input type="text" id="supplierName" name="supplierName" required placeholder="أدخل اسم المورد">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supplierPhone">رقم الهاتف *</label>
+                        <input type="tel" id="supplierPhone" name="supplierPhone" required placeholder="مثال: +966501234567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supplierEmail">البريد الإلكتروني</label>
+                        <input type="email" id="supplierEmail" name="supplierEmail" placeholder="مثال: supplier@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supplierType">نوع المورد</label>
+                        <select id="supplierType" name="supplierType">
+                            <option value="شركة">شركة</option>
+                            <option value="مؤسسة">مؤسسة</option>
+                            <option value="فرد">فرد</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeSupplierModal()">إلغاء</button>
+                        <button type="submit" class="btn-primary">حفظ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- القدم -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2023 نظام إدارة الأعمال. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- ملفات JavaScript -->
+    <script src="js/suppliers.js"></script>
+    <script>
+        // متغيرات عامة
+        let suppliers = JSON.parse(localStorage.getItem('monjizSuppliers')) || [];
+        let editingSupplierIndex = -1;
+
+        // دالة إظهار نافذة إضافة مورد
+        function showAddSupplierModal() {
+            document.getElementById('modalTitle').textContent = 'إضافة مورد جديد';
+            document.getElementById('supplierForm').reset();
+            editingSupplierIndex = -1;
+            document.getElementById('supplierModal').style.display = 'flex';
+        }
+
+        // دالة إغلاق النافذة المنبثقة
+        function closeSupplierModal() {
+            document.getElementById('supplierModal').style.display = 'none';
+            document.getElementById('supplierForm').reset();
+            editingSupplierIndex = -1;
+        }
+
+        // دالة حفظ المورد
+        function saveSupplier(event) {
+            event.preventDefault();
+
+            const supplierName = document.getElementById('supplierName').value.trim();
+            const supplierPhone = document.getElementById('supplierPhone').value.trim();
+            const supplierEmail = document.getElementById('supplierEmail').value.trim();
+            const supplierType = document.getElementById('supplierType').value;
+
+            console.log('بيانات المورد:', { supplierName, supplierPhone, supplierEmail, supplierType });
+
+            if (!supplierName) {
+                alert('يرجى إدخال اسم المورد');
+                return;
+            }
+
+            if (!supplierPhone) {
+                alert('يرجى إدخال رقم الهاتف');
+                return;
+            }
+
+            // التحقق من توفر النظام المركزي
+            if (!window.dataManager) {
+                alert('النظام المركزي غير متاح. يرجى إعادة تحميل الصفحة.');
+                return;
+            }
+
+            const supplierData = {
+                name: supplierName,
+                type: supplierType,
+                phone: supplierPhone,
+                email: supplierEmail || supplierName.toLowerCase().replace(/\s+/g, '') + '@example.com'
+            };
+
+            let savedSupplier;
+            if (editingSupplierIndex >= 0) {
+                // تعديل مورد موجود
+                const supplierId = suppliersAllData[editingSupplierIndex].id;
+                savedSupplier = window.dataManager.updateSupplier(supplierId, supplierData);
+            } else {
+                // إضافة مورد جديد
+                savedSupplier = window.dataManager.addSupplier(supplierData);
+            }
+
+            if (!savedSupplier) {
+                alert('حدث خطأ أثناء حفظ المورد');
+                return;
+            }
+
+            console.log('تم حفظ المورد في النظام المركزي:', savedSupplier);
+
+            // إضافة المورد لدليل الحسابات
+            if (editingSupplierIndex < 0) { // فقط للموردين الجدد
+                addSupplierToAccounts(savedSupplier);
+
+                // إرسال حدث مخصص لنظام التكامل
+                const supplierAddedEvent = new CustomEvent('supplierAdded', {
+                    detail: savedSupplier
+                });
+                document.dispatchEvent(supplierAddedEvent);
+                console.log('تم إرسال حدث إضافة المورد لنظام التكامل');
+            }
+
+            // تحديث البيانات المحلية أيضاً للتوافق
+            suppliersAllData = window.dataManager.getSuppliers();
+            suppliersTotalItems = suppliersAllData.length;
+
+            closeSupplierModal();
+            updateSuppliersDataDisplay();
+
+            alert(editingSupplierIndex >= 0 ? 'تم تحديث المورد بنجاح!' : 'تم إضافة المورد بنجاح!');
+        }
+
+        // دالة تعديل المورد
+        function editSupplier(supplierId) {
+            // البحث عن المورد بالـ ID
+            const supplierIndex = suppliersAllData.findIndex(s => s.id == supplierId);
+            if (supplierIndex >= 0) {
+                const supplier = suppliersAllData[supplierIndex];
+                document.getElementById('modalTitle').textContent = 'تعديل المورد';
+                document.getElementById('supplierName').value = supplier.name;
+                document.getElementById('supplierPhone').value = supplier.phone;
+                document.getElementById('supplierEmail').value = supplier.email;
+                document.getElementById('supplierType').value = supplier.type;
+                editingSupplierIndex = supplierIndex;
+                document.getElementById('supplierModal').style.display = 'flex';
+            }
+        }
+
+        // دالة عرض المورد
+        function viewSupplier(supplierId) {
+            const supplier = suppliersAllData.find(s => s.id == supplierId);
+            if (supplier) {
+                alert(`تفاصيل المورد:\n\nالاسم: ${supplier.name}\nالنوع: ${supplier.type}\nالهاتف: ${supplier.phone}\nالبريد الإلكتروني: ${supplier.email}\nتاريخ الإضافة: ${new Date(supplier.createdAt).toLocaleDateString('ar-SA')}`);
+            }
+        }
+
+        // دالة حذف المورد
+        function deleteSupplier(supplierId) {
+            const supplierIndex = suppliersAllData.findIndex(s => s.id == supplierId);
+            if (supplierIndex >= 0) {
+                const supplier = suppliersAllData[supplierIndex];
+                if (confirm(`هل أنت متأكد من حذف المورد "${supplier.name}"؟`)) {
+                    suppliersAllData.splice(supplierIndex, 1);
+                    localStorage.setItem('monjizSuppliers', JSON.stringify(suppliersAllData));
+                    suppliersTotalItems = suppliersAllData.length;
+
+                    // إعادة حساب الصفحة الحالية
+                    const totalPages = Math.ceil(suppliersTotalItems / suppliersItemsPerPage);
+                    if (suppliersCurrentPage > totalPages && totalPages > 0) {
+                        suppliersCurrentPage = totalPages;
+                    }
+
+                    updateSuppliersDataDisplay();
+                    alert('تم حذف المورد بنجاح!');
+                }
+            }
+        }
+
+        // دالة لإدارة القوائم المنسدلة
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+
+            // إغلاق القوائم الأخرى
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (menu.id !== dropdownId) {
+                    menu.classList.remove('show');
+                }
+            });
+        }
+
+        // إغلاق القوائم المنسدلة عند النقر خارجها
+        document.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // دوال الطباعة والتصدير
+        function printSuppliers() {
+            window.print();
+        }
+
+        function exportToExcel() {
+            alert('سيتم تصدير البيانات إلى Excel قريباً');
+        }
+
+        function exportToPDF() {
+            alert('سيتم تصدير البيانات إلى PDF قريباً');
+        }
+
+        // متغيرات التنقل للموردين
+        let suppliersCurrentPage = 1;
+        let suppliersItemsPerPage = 10;
+        let suppliersTotalItems = 0;
+        let suppliersAllData = [];
+
+        // إضافة بعض البيانات التجريبية للموردين إذا لم تكن موجودة
+        function addSampleSuppliersIfEmpty() {
+            const existingData = JSON.parse(localStorage.getItem('monjizSuppliers')) || [];
+            if (existingData.length === 0) {
+                const sampleData = [];
+
+                // إضافة 25 مورد للاختبار
+                for (let i = 1; i <= 25; i++) {
+                    sampleData.push({
+                        id: i,
+                        code: String(i).padStart(3, '0'),
+                        name: `مورد رقم ${i}`,
+                        type: ['شركة', 'فرد', 'مؤسسة'][Math.floor(Math.random() * 3)],
+                        phone: `+96611234${String(i).padStart(4, '0')}`,
+                        email: `supplier${i}@example.com`,
+                        address: `عنوان المورد رقم ${i}`,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                localStorage.setItem('monjizSuppliers', JSON.stringify(sampleData));
+            }
+        }
+
+        // دالة تحديث عرض بيانات الموردين حسب الصفحة
+        function updateSuppliersDataDisplay() {
+            const startIndex = (suppliersCurrentPage - 1) * suppliersItemsPerPage;
+            const endIndex = startIndex + suppliersItemsPerPage;
+            const pageData = suppliersAllData.slice(startIndex, endIndex);
+
+            // تحديث الجدول
+            updateSuppliersTableDisplay(pageData);
+
+            // تحديث معلومات النتائج
+            updateSuppliersResultsInfo();
+
+            // تحديث أزرار التنقل
+            updateSuppliersPaginationButtons();
+        }
+
+        // دالة تحديث عرض جدول الموردين
+        function updateSuppliersTableDisplay(data) {
+            const tbody = document.querySelector('#suppliers-list');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: #6c757d;">
+                            <i class="fas fa-users" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            لا توجد موردين للعرض
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            data.forEach((supplier, index) => {
+                const globalIndex = (suppliersCurrentPage - 1) * suppliersItemsPerPage + index + 1;
+                const row = `
+                    <tr>
+                        <td>${supplier.name || `مورد رقم ${globalIndex}`}</td>
+                        <td><span class="badge ${supplier.type === 'شركة' ? 'primary' : supplier.type === 'فرد' ? 'success' : 'info'}">${supplier.type || 'شركة'}</span></td>
+                        <td>${supplier.phone || `+96611234${globalIndex.toString().padStart(4, '0')}`}</td>
+                        <td>${supplier.email || `supplier${globalIndex}@example.com`}</td>
+                        <td>
+                            <div class="action-buttons-horizontal">
+                                <button class="action-btn view" onclick="viewSupplier(${supplier.id || globalIndex})" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit" onclick="editSupplier(${supplier.id || globalIndex})" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="deleteSupplier(${supplier.id || globalIndex})" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // دالة تحديث معلومات نتائج الموردين
+        function updateSuppliersResultsInfo() {
+            const startResult = suppliersTotalItems === 0 ? 0 : (suppliersCurrentPage - 1) * suppliersItemsPerPage + 1;
+            const endResult = Math.min(suppliersCurrentPage * suppliersItemsPerPage, suppliersTotalItems);
+
+            const startElement = document.getElementById('suppliers-start-result');
+            const endElement = document.getElementById('suppliers-end-result');
+            const totalElement = document.getElementById('suppliers-total-results');
+
+            if (startElement) startElement.textContent = startResult;
+            if (endElement) endElement.textContent = endResult;
+            if (totalElement) totalElement.textContent = suppliersTotalItems;
+        }
+
+        // دالة تحديث أزرار التنقل للموردين
+        function updateSuppliersPaginationButtons() {
+            const totalPages = Math.ceil(suppliersTotalItems / suppliersItemsPerPage);
+            const paginationContainer = document.getElementById('suppliers-pagination-container');
+
+            if (totalPages <= 1) {
+                paginationContainer.style.display = 'none';
+                return;
+            }
+
+            paginationContainer.style.display = 'flex';
+
+            let paginationHTML = '';
+
+            // زر السابق
+            const prevDisabled = suppliersCurrentPage === 1 ? 'disabled' : '';
+            paginationHTML += `
+                <button class="page-btn prev ${prevDisabled}" onclick="changeSuppliersPage('prev')">
+                    <i class="fas fa-chevron-right"></i> السابق
+                </button>
+            `;
+
+            // أزرار الصفحات
+            const startPage = Math.max(1, suppliersCurrentPage - 2);
+            const endPage = Math.min(totalPages, suppliersCurrentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const activeClass = i === suppliersCurrentPage ? 'active' : '';
+                paginationHTML += `<button class="page-btn ${activeClass}" onclick="changeSuppliersPage(${i})">${i}</button>`;
+            }
+
+            // زر التالي
+            const nextDisabled = suppliersCurrentPage === totalPages ? 'disabled' : '';
+            paginationHTML += `
+                <button class="page-btn next ${nextDisabled}" onclick="changeSuppliersPage('next')">
+                    التالي <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+
+            paginationContainer.innerHTML = paginationHTML;
+        }
+
+        // دالة تغيير صفحة الموردين
+        function changeSuppliersPage(page) {
+            const totalPages = Math.ceil(suppliersTotalItems / suppliersItemsPerPage);
+
+            if (page === 'prev') {
+                if (suppliersCurrentPage > 1) {
+                    suppliersCurrentPage--;
+                }
+            } else if (page === 'next') {
+                if (suppliersCurrentPage < totalPages) {
+                    suppliersCurrentPage++;
+                }
+            } else if (typeof page === 'number') {
+                if (page >= 1 && page <= totalPages) {
+                    suppliersCurrentPage = page;
+                }
+            }
+
+            updateSuppliersDataDisplay();
+        }
+
+        // دالة تحميل بيانات الموردين
+        function loadSuppliersData() {
+            // التحقق من توفر النظام المركزي
+            if (window.dataManager) {
+                // تحميل البيانات من النظام المركزي
+                suppliersAllData = window.dataManager.getSuppliers();
+                console.log('تم تحميل الموردين من النظام المركزي:', suppliersAllData);
+            } else {
+                // إضافة البيانات التجريبية أولاً
+                addSampleSuppliersIfEmpty();
+
+                // تحميل بيانات الموردين من localStorage
+                suppliersAllData = JSON.parse(localStorage.getItem('monjizSuppliers')) || [];
+                console.log('تم تحميل الموردين من localStorage:', suppliersAllData);
+            }
+
+            suppliersTotalItems = suppliersAllData.length;
+            suppliersCurrentPage = 1;
+
+            updateSuppliersDataDisplay();
+        }
+
+        // دالة البحث في الموردين
+        function searchSuppliers() {
+            const searchInput = document.getElementById('search-suppliers');
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const tableRows = document.querySelectorAll('#suppliers-list tr');
+
+            console.log('البحث في الموردين عن:', searchTerm);
+            console.log('عدد الصفوف الموجودة:', tableRows.length);
+
+            let visibleCount = 0;
+
+            tableRows.forEach(row => {
+                if (searchTerm === '') {
+                    // إذا كان البحث فارغ، أظهر جميع الصفوف
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    // البحث في محتوى الصف - البحث في النص الكامل للصف
+                    const rowText = row.textContent.toLowerCase();
+
+                    if (rowText.includes(searchTerm)) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+
+            // تحديث عداد النتائج
+            updateSupplierSearchResultsCount(visibleCount);
+
+            // إخفاء/إظهار التنقل حسب البحث
+            const paginationContainer = document.getElementById('suppliers-pagination');
+            if (searchTerm !== '') {
+                // إخفاء التنقل أثناء البحث
+                if (paginationContainer) paginationContainer.style.display = 'none';
+            } else {
+                // إظهار التنقل عند مسح البحث
+                if (paginationContainer) paginationContainer.style.display = 'flex';
+                // إعادة تحميل البيانات مع التنقل
+                if (typeof changeSuppliersPage === 'function') {
+                    changeSuppliersPage(1);
+                }
+            }
+
+            console.log(`تم العثور على ${visibleCount} مورد`);
+        }
+
+        // دالة تحديث عداد نتائج البحث للموردين
+        function updateSupplierSearchResultsCount(count) {
+            // إنشاء أو تحديث عداد النتائج
+            let resultsCounter = document.getElementById('suppliers-search-results');
+            if (!resultsCounter) {
+                resultsCounter = document.createElement('div');
+                resultsCounter.id = 'suppliers-search-results';
+                resultsCounter.style.cssText = `
+                    padding: 10px 20px;
+                    background: #f8f9fa;
+                    border-radius: 8px;
+                    color: #495057;
+                    font-size: 14px;
+                    margin-bottom: 15px;
+                `;
+
+                const searchFilters = document.querySelector('.search-filters-modern');
+                if (searchFilters) {
+                    searchFilters.parentNode.insertBefore(resultsCounter, searchFilters.nextSibling);
+                }
+            }
+
+            if (document.getElementById('search-suppliers').value.trim() !== '') {
+                resultsCounter.innerHTML = `<i class="fas fa-search"></i> تم العثور على <span style="color: #007bff; font-weight: bold;">${count}</span> مورد`;
+                resultsCounter.style.display = 'block';
+            } else {
+                resultsCounter.style.display = 'none';
+            }
+        }
+
+        // دالة مسح البحث للموردين
+        function clearSupplierSearch() {
+            const searchInput = document.getElementById('search-suppliers');
+            if (searchInput) {
+                searchInput.value = '';
+                searchSuppliers(); // إعادة عرض جميع النتائج
+            }
+        }
+
+        // دوال التصفية
+        function clearFilters() {
+            document.getElementById('search-suppliers').value = '';
+            document.getElementById('filter-type').value = '';
+            document.getElementById('filter-category').value = '';
+            // إعادة تحميل البيانات
+            loadSuppliersData();
+        }
+
+        // دالة تحميل الموردين
+
+
+        // دالة تحديث الإحصائيات
+        function updateSupplierStats() {
+            const totalSuppliersElement = document.getElementById('total-suppliers');
+            if (totalSuppliersElement) {
+                totalSuppliersElement.textContent = suppliers.length;
+            }
+        }
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحميل البيانات مع التنقل الجديد
+            loadSuppliersData();
+
+            // إضافة event listener للنموذج
+            document.getElementById('supplierForm').addEventListener('submit', saveSupplier);
+
+            // تفعيل البحث الفوري في الموردين
+            const supplierSearchInput = document.getElementById('search-suppliers');
+            console.log('البحث عن حقل البحث:', supplierSearchInput);
+
+            if (supplierSearchInput) {
+                console.log('✅ تم العثور على حقل البحث - تفعيل البحث الفوري في الموردين');
+                supplierSearchInput.addEventListener('input', function() {
+                    console.log('🔍 تم تشغيل البحث - القيمة:', supplierSearchInput.value);
+                    searchSuppliers();
+                });
+
+                // إضافة مسح البحث بزر Escape
+                supplierSearchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        clearSupplierSearch();
+                    }
+                });
+            } else {
+                console.error('❌ لم يتم العثور على حقل البحث في الموردين');
+                console.log('جميع العناصر بـ ID:', document.querySelectorAll('[id]'));
+            }
+
+            // إغلاق النافذة عند النقر خارجها
+            document.getElementById('supplierModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeSupplierModal();
+                }
+            });
+        });
+
+        // دالة إضافة المورد لدليل الحسابات
+        function addSupplierToAccounts(supplier) {
+            try {
+                // تحميل الحسابات الحالية من كلا المفتاحين
+                const accounts = JSON.parse(localStorage.getItem('chartOfAccounts')) ||
+                               JSON.parse(localStorage.getItem('monjizAccounts')) || [];
+
+                // إضافة الحسابات الأساسية للموردين إذا لم تكن موجودة
+                const basicSupplierAccounts = [
+                    {
+                        id: 2,
+                        code: '2',
+                        name: 'الخصوم',
+                        type: 'liabilities',
+                        level: 1,
+                        balance: 0,
+                        status: 'active'
+                    },
+                    {
+                        id: 21030,
+                        code: '21030',
+                        name: 'الموردون',
+                        type: 'liabilities',
+                        subType: 'current_liabilities',
+                        category: 'suppliers',
+                        parentCode: '2',
+                        level: 2,
+                        balance: 0,
+                        status: 'active'
+                    }
+                ];
+
+                // إضافة الحسابات الأساسية إذا لم تكن موجودة
+                basicSupplierAccounts.forEach(basicAccount => {
+                    const exists = accounts.find(acc => acc.code === basicAccount.code);
+                    if (!exists) {
+                        accounts.push(basicAccount);
+                    }
+                });
+
+                // إنشاء حساب المورد
+                const supplierAccount = {
+                    id: Date.now(),
+                    code: `21030${String(supplier.id).padStart(3, '0')}`,
+                    name: supplier.name,
+                    type: 'liabilities',
+                    subType: 'current_liabilities',
+                    category: 'suppliers',
+                    parentCode: '21030',
+                    parentName: 'الموردون',
+                    balance: 0,
+                    status: 'active',
+                    linkedType: 'supplier',
+                    linkedId: supplier.id,
+                    level: 3,
+                    createdAt: new Date().toISOString()
+                };
+
+                // إضافة الحساب
+                accounts.push(supplierAccount);
+
+                // حفظ الحسابات المحدثة في كلا المفتاحين للتوافق
+                localStorage.setItem('chartOfAccounts', JSON.stringify(accounts));
+                localStorage.setItem('monjizAccounts', JSON.stringify(accounts));
+
+                console.log(`تم إضافة حساب المورد "${supplier.name}" في دليل الحسابات`);
+            } catch (error) {
+                console.error('خطأ في إضافة حساب المورد:', error);
+            }
+        }
+    </script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/integration-system.js"></script>
+    <script src="js/apply-buttons-fix.js"></script>
+    <!-- إضافة ملف إصلاح مشكلة ظهور المورد مرتين -->
+    <script src="js/suppliers-fix.js"></script>
+</body>
+</html>

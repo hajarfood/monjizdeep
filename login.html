@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - منجز</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .company-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+        }
+
+        .input-group .form-control {
+            padding-left: 50px;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        .forgot-password {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .setup-link {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .setup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .setup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .login-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Company Logo and Name -->
+        <div class="company-logo" id="company-logo">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="company-name" id="company-name">نظام إدارة الأعمال</div>
+        <div class="company-subtitle" id="company-subtitle">منجز - نظام شامل لإدارة الأعمال</div>
+
+        <!-- Login Title -->
+        <h2 class="login-title">
+            <i class="fas fa-sign-in-alt"></i>
+            تسجيل الدخول
+        </h2>
+
+        <!-- Messages -->
+        <div class="error-message" id="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="error-text">خطأ في تسجيل الدخول</span>
+        </div>
+
+        <div class="success-message" id="success-message">
+            <i class="fas fa-check-circle"></i>
+            <span id="success-text">تم تسجيل الدخول بنجاح</span>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">اسم المستخدم</label>
+                <div class="input-group">
+                    <input type="text" id="username" class="form-control" placeholder="أدخل اسم المستخدم" required>
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">كلمة المرور</label>
+                <div class="input-group">
+                    <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login" id="login-btn">
+                <span class="loading" id="loading">
+                    <i class="fas fa-spinner"></i>
+                </span>
+                <span id="login-text">تسجيل الدخول</span>
+            </button>
+        </form>
+
+        <!-- Forgot Password -->
+        <div class="forgot-password">
+            <a href="#" onclick="resetPassword()">نسيت كلمة المرور؟</a>
+        </div>
+
+        <!-- Setup Link -->
+        <div class="setup-link">
+            <p>أول مرة تستخدم النظام؟</p>
+            <a href="#" onclick="firstTimeSetup()">إعداد النظام للمرة الأولى</a>
+        </div>
+    </div>
+
+    <script>
+        // تحميل بيانات المؤسسة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCompanyData();
+            setupEventListeners();
+            checkExistingLogin();
+        });
+
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            
+            // Enter key support
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin(e);
+                }
+            });
+        }
+
+        // تحميل بيانات المؤسسة
+        function loadCompanyData() {
+            const companySettings = JSON.parse(localStorage.getItem('monjizCompanySettings'));
+            
+            if (companySettings) {
+                if (companySettings.name) {
+                    document.getElementById('company-name').textContent = companySettings.name;
+                    document.getElementById('company-subtitle').textContent = 
+                        companySettings.taxNumber ? `الرقم الضريبي: ${companySettings.taxNumber}` : 'نظام إدارة الأعمال';
+                }
+                
+                if (companySettings.logo) {
+                    document.getElementById('company-logo').innerHTML = 
+                        `<img src="${companySettings.logo}" alt="شعار المؤسسة">`;
+                }
+            }
+        }
+
+        // فحص تسجيل الدخول الموجود
+        function checkExistingLogin() {
+            const isLoggedIn = localStorage.getItem('monjizLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // معالجة تسجيل الدخول
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                showError('يرجى إدخال اسم المستخدم وكلمة المرور');
+                return;
+            }
+
+            // إظهار مؤشر التحميل
+            showLoading(true);
+            
+            // محاكاة تأخير الشبكة
+            setTimeout(() => {
+                validateLogin(username, password);
+            }, 1000);
+        }
+
+        // التحقق من صحة بيانات تسجيل الدخول
+        function validateLogin(username, password) {
+            // البحث عن المستخدم في قائمة المستخدمين
+            const users = JSON.parse(localStorage.getItem('monjizUsers')) || [];
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            // التحقق من المستخدم الإداري في إعدادات المستخدم
+            const userSettings = JSON.parse(localStorage.getItem('monjizUserSettings'));
+            
+            // إعدادات افتراضية إذا لم توجد
+            const defaultUsername = 'admin';
+            const defaultPassword = 'admin123';
+            
+            let validUsername = defaultUsername;
+            let validPassword = defaultPassword;
+            
+            // استخدام الإعدادات المحفوظة إذا وجدت
+            if (userSettings) {
+                validUsername = userSettings.adminUser || defaultUsername;
+                validPassword = userSettings.adminPassword || defaultPassword;
+            }
+            
+            // التحقق من المستخدم في قائمة المستخدمين أو المستخدم الإداري
+            if (user || (username === validUsername && password === validPassword)) {
+                // تسجيل دخول ناجح
+                localStorage.setItem('monjizLoggedIn', 'true');
+                localStorage.setItem('monjizCurrentUser', username);
+                localStorage.setItem('monjizLoginTime', new Date().toISOString());
+                
+                // حفظ دور المستخدم
+                if (user) {
+                    localStorage.setItem('monjizCurrentUserRole', user.role);
+                } else {
+                    localStorage.setItem('monjizCurrentUserRole', 'admin');
+                }
+                
+                showSuccess('تم تسجيل الدخول بنجاح');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } else {
+                showError('اسم المستخدم أو كلمة المرور غير صحيحة');
+            }
+            
+            showLoading(false);
+        }
+
+        // إظهار مؤشر التحميل
+        function showLoading(show) {
+            const loadingElement = document.getElementById('loading');
+            const loginText = document.getElementById('login-text');
+            const loginBtn = document.getElementById('login-btn');
+
+            if (show) {
+                loadingElement.style.display = 'inline-block';
+                loginText.textContent = 'جاري تسجيل الدخول...';
+                loginBtn.disabled = true;
+            } else {
+                loadingElement.style.display = 'none';
+                loginText.textContent = 'تسجيل الدخول';
+                loginBtn.disabled = false;
+            }
+        }
+
+        // إظهار رسالة خطأ
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const successElement = document.getElementById('success-message');
+
+            successElement.style.display = 'none';
+            errorText.textContent = message;
+            errorElement.style.display = 'block';
+
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 5000);
+        }
+
+        // إظهار رسالة نجاح
+        function showSuccess(message) {
+            const successElement = document.getElementById('success-message');
+            const successText = document.getElementById('success-text');
+            const errorElement = document.getElementById('error-message');
+
+            errorElement.style.display = 'none';
+            successText.textContent = message;
+            successElement.style.display = 'block';
+        }
+
+        // إعادة تعيين كلمة المرور
+        function resetPassword() {
+            // الحصول على إعدادات المستخدم والشركة
+            const userSettings = JSON.parse(localStorage.getItem('monjizUserSettings')) || {};
+            const companySettings = JSON.parse(localStorage.getItem('monjizCompanySettings')) || {};
+            const companyEmail = companySettings.email;
+            
+            // التحقق من وجود بريد إلكتروني مسجل
+            if (!companyEmail) {
+                alert('لم يتم العثور على بريد إلكتروني مسجل في إعدادات الشركة. يرجى إعداد بريد إلكتروني في صفحة الإعدادات أولاً.');
+                return;
+            }
+            
+            // طلب البريد الإلكتروني من المستخدم للتحقق
+            const userEmail = prompt('الرجاء إدخال البريد الإلكتروني المسجل للشركة للتحقق:');
+            
+            if (!userEmail) return; // إلغاء العملية إذا لم يتم إدخال بريد إلكتروني
+            
+            // التحقق من تطابق البريد الإلكتروني
+            if (userEmail.trim().toLowerCase() === companyEmail.trim().toLowerCase()) {
+                // إنشاء كلمة مرور عشوائية جديدة
+                const newPassword = Math.random().toString(36).slice(-8);
+                
+                // تحديث كلمة المرور
+                userSettings.adminPassword = newPassword;
+                localStorage.setItem('monjizUserSettings', JSON.stringify(userSettings));
+                
+                // عرض كلمة المرور الجديدة للمستخدم
+                alert(`تم إعادة تعيين كلمة المرور بنجاح!\nاسم المستخدم: ${userSettings.adminUser || 'admin'}\nكلمة المرور الجديدة: ${newPassword}\n\nيرجى حفظ كلمة المرور في مكان آمن.`);
+                
+                // ملء حقول تسجيل الدخول تلقائياً
+                document.getElementById('username').value = userSettings.adminUser || 'admin';
+                document.getElementById('password').value = newPassword;
+                
+                showSuccess('تم إعادة تعيين كلمة المرور بنجاح');
+            } else {
+                // في حالة عدم تطابق البريد الإلكتروني
+                alert('البريد الإلكتروني غير صحيح. لا يمكن إعادة تعيين كلمة المرور.');
+            }
+        }
+
+        // إعداد النظام للمرة الأولى
+        function firstTimeSetup() {
+            if (confirm('هل تريد الانتقال لصفحة الإعدادات لإعداد النظام؟')) {
+                // تسجيل دخول مؤقت للوصول للإعدادات
+                localStorage.setItem('monjizLoggedIn', 'true');
+                localStorage.setItem('monjizCurrentUser', 'admin');
+                localStorage.setItem('monjizFirstTimeSetup', 'true');
+
+                window.location.href = 'settings.html';
+            }
+        }
+    </script>
+    <!-- إضافة ملف إصلاح تسجيل الدخول -->
+    <script src="js/login-fix.js"></script>
+</body>
+</html>
